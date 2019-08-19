@@ -26,17 +26,20 @@ import {Table, Divider, Tag, Modal} from 'antd'
     });
   };
 
-   handleClick = (e) => {
+   handleClick = (record) => {
      console.log('点击')
      console.log(this.props)
      this.setState({visible:true})
     const { dispatch } = this.props;
+    // console.log('e', e.target)
     dispatch({
-      type: 'example/getname'
+      type: 'example/getnamee',
+      payload: {
+        name: record.name,
+        h: record.age,
+      }
+
     })
-    dispatch({
-      type: 'example/updatee',
-    });
   }
   render() {
     const data = [
@@ -103,7 +106,7 @@ import {Table, Divider, Tag, Modal} from 'antd'
         title: 'Action',
         key: 'action',
         render: (text, record) => (
-          <ModalZI record={record}/>
+          <ModalZI {...record}/>
         ),
       },
     ];
@@ -117,11 +120,11 @@ import {Table, Divider, Tag, Modal} from 'antd'
 
     const ModalZI = (record) => {
       return (
-      <span>
-      <a onClick={this.handleClick}>Invite {record.name}</a>
-      <Divider type="vertical" />
-      <a>Delete</a>
-    </span>
+        <span>
+        <a onClick={(record) => this.handleClick(record)}>Invite {record.name}</a>
+        <Divider type="vertical" />
+        <a>Delete</a>
+      </span>
     )
       }
     return (

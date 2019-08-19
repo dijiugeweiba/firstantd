@@ -5,7 +5,7 @@ export default {
 
   state: {
     current: '',
-    content: ''
+    name: ''
   },
 
   subscriptions: {
@@ -20,8 +20,11 @@ export default {
     *updatee({ payload }, { call, put }) {  // eslint-disable-line
       yield put({ type: 'update' , payload:'date'});
     },
-    *getnamee({ payload }, { put }) {  // eslint-disable-line
-      yield put({ type: 'getname' , payload:'John'});
+    *getnamee({ payload }, { put }) {  // eslint-disable-line 
+      const {name, h} = payload
+      console.log(payload)
+      const c = name + String(h)
+      yield put({ type: 'getname' , c });
     },
 
   },
@@ -34,9 +37,9 @@ export default {
       console.log('payload',payload)
       return { ...state, current:payload };
     },
-    getname(state,{payload}) {
-      return { ...state, content:payload };
-    }
+    getname(state,{c}) {
+      return { ...state, name:c};
+    },
   },
 
 };
