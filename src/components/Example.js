@@ -1,14 +1,17 @@
 import React from 'react';
 import { connect } from 'dva';
-import Demoexport from './Demo';
+// import Demoexport from './Demo';
 import {Table, Divider, Tag, Modal} from 'antd'
+import Form from '../components/Form';
 
 
  class Example extends React.Component {
   state = { 
     visible: false ,
-    data: []
+    data: [],
+    modal: '1',
   };
+
   componentDidMount() {
     const {dispatch,example:{data}} = this.props
     dispatch({
@@ -17,6 +20,16 @@ import {Table, Divider, Tag, Modal} from 'antd'
     this.setState({
       data: data,
     })
+  }
+  componentWillReceiveProps(nextProps){
+    console.log(nextProps)
+if ('example' in nextProps) {
+  if (this.state.modal !== nextProps.example.name) {
+    this.setState({
+      modal: nextProps.example.name
+    })
+  }
+}
   }
   showModal = () => {
     this.setState({
@@ -57,10 +70,14 @@ import {Table, Divider, Tag, Modal} from 'antd'
         h: data.age,
       }
     })
+    // this.setState({
+    //   modal: example.name,
+    // })
 
 
   }
   render() {
+    console.log('state', this.state)
    const ModalZI = record => {
       return (
         <span>
@@ -117,13 +134,16 @@ import {Table, Divider, Tag, Modal} from 'antd'
       },
     ];
 
-    const {example} = this.props;
+    const {example, dispatch} = this.props;
 
-    const demoProps = {
+    // const demoProps = {
+    //   example:example,
+    //   data:'zkjashkdfjhaskjdhak',
+    // }
+    const formmodel = {
       example:example,
-      data:'zkjashkdfjhaskjdhak',
+      dispatch: dispatch,
     }
-
     
     return (
       <div>
@@ -137,7 +157,9 @@ import {Table, Divider, Tag, Modal} from 'antd'
           onOk={this.handleOk}
           onCancel={this.handleCancel}
         >
+        <p>{this.state.modal}</p>
         </Modal>
+        <Form {...formmodel}/>
         </div>)
 }
 };
