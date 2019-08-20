@@ -83,7 +83,7 @@ class PriceInput extends React.Component {
   };
 
   handleCurrencyChange = currency => {
-    
+    // iuygvufgh
     if (!('value' in this.props)) {
       this.setState({ currency });
     }
