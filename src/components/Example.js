@@ -3,17 +3,30 @@ import { connect } from 'dva';
 import Demoexport from './Demo';
 import {Table, Divider, Tag, Modal} from 'antd'
 
- class Example extends React.Component {
-  state = { visible: false };
 
+ class Example extends React.Component {
+  state = { 
+    visible: false ,
+    data: []
+  };
+  componentDidMount() {
+    const {dispatch,example:{data}} = this.props
+    dispatch({
+      type:'example/getdatae',
+    })
+    this.setState({
+      data: data,
+    })
+  }
   showModal = () => {
     this.setState({
       visible: true,
     });
   };
+  
 
   handleOk = e => {
-    console.log(e);
+    // console.log(e);
     this.setState({
       visible: false,
     });
@@ -26,45 +39,38 @@ import {Table, Divider, Tag, Modal} from 'antd'
     });
   };
 
-   handleClick = (record) => {
-     console.log('点击')
-     console.log(this.props)
-     this.setState({visible:true})
+  //  handleClick = data => {
+  //    console.log('点击')
+  //   //  console.log(this.props)
+  //    console.log(data)
+    
+  // }
+  handleModal = data => {
+    console.log('modal')
+    // console.log(data)
+    this.setState({visible:true})
     const { dispatch } = this.props;
-    // console.log('e', e.target)
     dispatch({
       type: 'example/getnamee',
       payload: {
-        name: record.name,
-        h: record.age,
+        name: data.name,
+        h: data.age,
       }
-
     })
+
+
   }
   render() {
-    const data = [
-      {
-        key: '1',
-        name: 'John Brown',
-        age: 32,
-        address: 'New York No. 1 Lake Park',
-        tags: ['nice', 'developer'],
-      },
-      {
-        key: '2',
-        name: 'Jim Green',
-        age: 42,
-        address: 'London No. 1 Lake Park',
-        tags: ['loser'],
-      },
-      {
-        key: '3',
-        name: 'Joe Black',
-        age: 32,
-        address: 'Sidney No. 1 Lake Park',
-        tags: ['cool', 'teacher'],
-      },
-    ];
+   const ModalZI = record => {
+      return (
+        <span>
+        <a onClick={() => this.handleModal(record)}>Invite {record.name}</a>
+        <Divider type="vertical" />
+        <a>Delete</a>
+      </span>
+    )
+    }
+    const data = this.props.example.data
     const columns = [
       {
         title: 'Name',
@@ -118,18 +124,10 @@ import {Table, Divider, Tag, Modal} from 'antd'
       data:'zkjashkdfjhaskjdhak',
     }
 
-    const ModalZI = (record) => {
-      return (
-        <span>
-        <a onClick={(record) => this.handleClick(record)}>Invite {record.name}</a>
-        <Divider type="vertical" />
-        <a>Delete</a>
-      </span>
-    )
-      }
+    
     return (
       <div>
-        <button onClick={this.handleClick}>点击</button>
+        {/* <button onClick={this.handleClick}>点击</button> */}
         {/* <Demoexport {...demoProps} /> */}
         {/* <div>{}</div> */}
         <Table columns={columns} dataSource={data} />

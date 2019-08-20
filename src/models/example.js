@@ -1,11 +1,12 @@
-
+import {initData} from '../services/data'
 export default {
 
   namespace: 'example',
 
   state: {
     current: '',
-    name: ''
+    name: '',
+    data: [],
   },
 
   subscriptions: {
@@ -24,7 +25,12 @@ export default {
       const {name, h} = payload
       console.log(payload)
       const c = name + String(h)
-      yield put({ type: 'getname' , c });
+      yield put({ type: 'getname' , payload:c });
+    },
+    *getdatae( _, { call, put }) {  // eslint-disable-line
+      const data = yield call(initData)
+      console.log(data)
+      yield put({ type: 'getdata' , payload:data});
     },
 
   },
@@ -34,11 +40,14 @@ export default {
       return { ...state, ...action.payload };
     },
     update(state,{payload}) {
-      console.log('payload',payload)
+      // console.log('payload',payload)
       return { ...state, current:payload };
     },
     getname(state,{c}) {
       return { ...state, name:c};
+    },
+    getdata(state,{payload}) {
+      return { ...state, data:payload};
     },
   },
 
